@@ -76,6 +76,8 @@ https://wj.qq.com/s/2116666/6661</font>
 
 ## 如何使用
 
+[使用手册](https://github.com/BYRIO/BUPTBachelorThesis/tree/master/guidebook)
+
 ### 编辑以下文件
 
 - main.cfg: 包含了论文中需要填写的项目，比如论文名称等。论文的致谢部分也放在了这里
