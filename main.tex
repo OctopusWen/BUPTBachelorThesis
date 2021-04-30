@@ -304,14 +304,16 @@ def plusFunc(a, b):
 \section{我对自己要求低的话也不至于想要修订这份模板}
 %%%%%%%%%%%%%%%%%%%%%%% Main Area ENDs Here %%%%%%%%%%%%%%%%%%%%%%%%
 %\let\cleardoublepage=\cleardoublepagebak
+
+\begin{nopagenumber}
 % Reference
 \clearpage\phantomsection\addcontentsline{toc}{chapter}{参考文献}
 \bibliographystyle{buptbachelor}
 \refbodyfont{\bibliography{ref}}
 
 % Thanks to page
-\clearpage\phantomsection\addcontentsline{toc}{chapter}{致\qquad{}谢}
-\chapter*{致\qquad{}谢}
+\clearpage
+\chapter{致\qquad{}谢}
 \normalsize\thankwords
 
 % Appendix
@@ -477,6 +479,7 @@ def minusFunc(a, b):
 新的社交网络技术在使信息的传播速度变快和规模变大的同时，也便利了不实信息（即不准确或有误导性的信息）的传播。然而，尽管我们对信息和新闻的获取越来越多地收到这些新技术的引导，但我们仍然对他们在虚假信息传播上的作用知之甚少。尽管媒体对假新闻传播的轶事分析给予了相当多的关注，但仍然几乎没有针对不实信息扩散或其发布源头的大规模实证调查。目前，虚假信息传播的研究仅仅局限于小的、局部的样本的分析上，而这些分析忽略了两个最重要的科学问题：真实信息和虚假信息的传播有什么不同？哪些人类判断中的因素可以解释这些不同？
 
 \endgroup
+\end{nopagenumber}
 
 % 开题报告
 \blankmatter

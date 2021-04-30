@@ -176,20 +176,22 @@ pdfborder=001, linkcolor=black, citecolor=black, urlcolor=black]{hyperref}
 \setcounter{secnumdepth}{3} % let subsubsection have number
 \setcounter{tocdepth}{3} % let subsubsection appear in CONTENTS
 \usepackage{titletoc}
+\newif{\ifpagenumber}
+\pagenumbertrue
 \renewcommand\contentsname{\centerline{\toctitlefont{目\qquad{}录}}}
-\titlecontents{chapter}[0em]{\tocchapterfont\vspace{0.4mm}}
-    {\CTEXnumber{\CJKsection}{\thecontentslabel}{第\CJKsection{章}\quad{}}}
-    {}
-    {\hspace{.5em}\titlerule*[6pt]{$\cdot$}\contentspage}
+\titlecontents{chapter}[0em]{\tocchapterfont\vspace{0.4mm}} {%
+    \ifpagenumber \CTEXnumber{\CJKsection}{\thecontentslabel}{第\CJKsection{章}\quad{}} \fi}{%
+    } {%
+    \ifpagenumber \hspace{.5em}\titlerule*[6pt]{$\cdot$}\contentspage\fi}
 \titlecontents{section}[1em]{\tocsectionfont\vspace{0.4mm}}{%
     \thecontentslabel\quad{}}{}{%
-    \hspace{.5em}\titlerule*[6pt]{$\cdot$}\contentspage}%
+    \ifpagenumber \hspace{.5em}\titlerule*[6pt]{$\cdot$}\contentspage\fi}%
 \titlecontents{subsection}[2em]{\tocsubsectionfont\vspace{0.4mm}}{%
     \thecontentslabel\quad{}}{}{%
-    \hspace{.5em}\titlerule*[6pt]{$\cdot$}\contentspage}%
+    \ifpagenumber \hspace{.5em}\titlerule*[6pt]{$\cdot$}\contentspage\fi}%
 \titlecontents{subsubsection}[3em]{\tocsubsubsectionfont\vspace{0.4mm}}{%
     \thecontentslabel\quad{}}{}{%
-    \hspace{.5em}\titlerule*[6pt]{$\cdot$}\contentspage}%
+    \ifpagenumber \hspace{.5em}\titlerule*[6pt]{$\cdot$}\contentspage\fi}%
 \makeatletter % Content Page style
 \renewcommand\frontmatter{%
     \if@openright\cleardoublepage\else\clearpage\fi%
@@ -359,6 +361,19 @@ pdfborder=001, linkcolor=black, citecolor=black, urlcolor=black]{hyperref}
     \pagestyle{empty}}%
 \makeatother%
 
+% No page number environment for appendix
+\newenvironment{nopagenumber}{%
+    \titleformat{\chapter}[hang]{\textchapterfont}{}{1em}{} %
+    \setcounter{secnumdepth}{0}%
+    \addtocontents{toc}{%
+	\protect\setcounter{tocdepth}{0}%
+	\protect\pagenumberfalse%
+	\ignorespaces}}{%
+    \setcounter{secnumdepth}{3}%
+    \addtocontents{toc}{%
+    \protect\setcounter{tocdepth}{3}%
+	\protect\pagenumbertrue%
+    \ignorespaces}}
 % List environment config
 \usepackage[inline]{enumitem}
 % Uncomment the two lines below if you want an list environment to share the same indent with a paragraph and no extra blank before, in or after the list.
