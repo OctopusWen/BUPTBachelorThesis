@@ -24,10 +24,36 @@
 \usepackage{setspace} % spacing
 \usepackage{xcolor}   % color
 \usepackage{xltxtra}  % print a XeLaTeX
-
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\usepackage{xpatch}
+\ExplSyntaxOn
+    \xpatchcmd\__xeCJK_check_family:n{\__xeCJK_warning:nxx}{\__xeCJK_info:nxx}{}{} % CJKfamily Warning
+\ExplSyntaxOff
  
 % Font family
 \setmainfont[Mapping=tex-text]{Times New Roman}
+
+\defaultfontfeatures{Path = fonts/, Mapping=tex-text}
+
+\setCJKmainfont[
+BoldFont=simhei.ttf,
+ItalicFont=simkai.ttf,
+SmallCapsFont=simhei.ttf
+]{simsun.ttf}
+
+\setCJKsansfont{simhei.ttf}
+\setCJKmonofont{simfang.ttf}
+
+\setCJKfamilyfont{zhsong}{simsun.ttf}
+\setCJKfamilyfont{zhhei}{simhei.ttf}
+\setCJKfamilyfont{zhfs}{simfang.ttf}
+\setCJKfamilyfont{zhkai}{simkai.ttf}
+
+\renewcommand*{\songti}{\CJKfamily{zhsong}} % 宋体
+\renewcommand*{\heiti}{\CJKfamily{zhhei}}   % 黑体
+\renewcommand*{\kaishu}{\CJKfamily{zhkai}}  % 楷书
+\renewcommand*{\fangsong}{\CJKfamily{zhfs}} % 仿宋
 
 % Font size
 \newcommand{\chuhao}{\zihao{0}}
