@@ -394,9 +394,11 @@ def minusFunc(a, b):
 	\end{tabular}
 \end{center}
 
+
 % Translated Article
 \newpage\backmatter
 \thispagestyle{empty}
+\phantomsection\addcontentsline{toc}{chapter}{外\quad{}文\quad{}资\quad{}料}
 % 原文第一页，PDF缩放比例为0.95，可以自行调整
 \includepdf[pages=1, scale=0.95, pagecommand=\begin{center}\translationtitlefont{外\quad{}文\quad{}资\quad{}料}\end{center}]{docs/translation.pdf}
 % 原文剩余部分
@@ -409,6 +411,7 @@ def minusFunc(a, b):
 \renewcommand{\thetable}{~外\arabic{chapter}-\arabic{table}~}
 
 \begin{center}
+\phantomsection\addcontentsline{toc}{chapter}{外\quad{}文\quad{}译\quad{}文}
 \translationtitlefont{外\quad{}文\quad{}译\quad{}文}
 \end{center}
 \vspace{8mm}
@@ -472,16 +475,17 @@ def minusFunc(a, b):
 新的社交网络技术在使信息的传播速度变快和规模变大的同时，也便利了不实信息（即不准确或有误导性的信息）的传播。然而，尽管我们对信息和新闻的获取越来越多地收到这些新技术的引导，但我们仍然对他们在虚假信息传播上的作用知之甚少。尽管媒体对假新闻传播的轶事分析给予了相当多的关注，但仍然几乎没有针对不实信息扩散或其发布源头的大规模实证调查。目前，虚假信息传播的研究仅仅局限于小的、局部的样本的分析上，而这些分析忽略了两个最重要的科学问题：真实信息和虚假信息的传播有什么不同？哪些人类判断中的因素可以解释这些不同？
 
 \endgroup
-\end{nopagenumber}
 
 % 开题报告
 \blankmatter
-\includepdf[pages=-]{docs/openingReport.pdf} 
-
+\phantomsection\addcontentsline{toc}{chapter}{开\quad{}题\quad{}报\quad{}告}
+\includepdf[pages=-]{docs/openingReport.pdf}
 
 % 中期检查表
 \blankmatter
-\includepdf[pages=-]{docs/interimReport.pdf} 
+\phantomsection\addcontentsline{toc}{chapter}{中\quad{}期\quad{}检\quad{}查\quad{}表}
+\includepdf[pages=-]{docs/interimReport.pdf}
 
+\end{nopagenumber}
 
 \end{document}
