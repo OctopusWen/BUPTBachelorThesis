@@ -332,8 +332,7 @@ def plusFunc(a, b):
 \chapter*{附\qquad{}录}
 \phantomsection\addcontentsline{toc}{chapter}{附\qquad{}录}
 
-\phantomsection
-\addcontentsline{toc}{section}{附录1\quad{}缩略语表}
+\phantomsection\addcontentsline{toc}{section}{附录1\quad{}缩略语表}
 \section*{附录1\quad{}缩略语表}
 
 \begin{bupttable}{基于浏览者行为的特征}{crowdwisdom2}
@@ -378,8 +377,7 @@ def minusFunc(a, b):
 \end{equation}
 
 \clearpage
-\phantomsection
-\addcontentsline{toc}{section}{附录2\quad{}数学符号}
+\phantomsection\addcontentsline{toc}{section}{附录2\quad{}数学符号}
 \section*{附录2\quad{}数学符号}
 \begin{center}
 	\begin{tabular}{ccc}
@@ -396,17 +394,13 @@ def minusFunc(a, b):
 	\end{tabular}
 \end{center}
 
-\newpage\backmatter
-
 % Translated Article
-\blankmatter
+\newpage\backmatter
 \thispagestyle{empty}
-\begin{center}
 % 原文第一页，PDF缩放比例为0.95，可以自行调整
-\includepdf[pages=1, scale=0.95, pagecommand=\heiti\sanhao{外\quad{}文\quad{}原\quad{}文}]{docs/translation.pdf}
+\includepdf[pages=1, scale=0.95, pagecommand=\begin{center}\translationtitlefont{外\quad{}文\quad{}资\quad{}料}\end{center}]{docs/translation.pdf}
 % 原文剩余部分
-\includepdf[pages=2-, scale=0.95, pagecommand={}]{docs/translation.pdf}
-\end{center}
+\includepdf[pages=2-, scale=0.95]{docs/translation.pdf}
 
 % Translation
 \setcounter{chapter}{0}
