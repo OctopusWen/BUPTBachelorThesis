@@ -289,6 +289,22 @@ pdfborder=001, linkcolor=black, citecolor=black, urlcolor=black]{hyperref}  % �
     \label{#2}}{%
 \end{table}}%
 
+% longtable tweaking
+% New longtable environment
+% Usage: \begin{buptlongtable}{alignment}{caption}{label}
+%            <normal longtable>
+%        \end{buptlongtable}
+\usepackage{longtable}
+\newenvironment{buptlongtable}[3]{
+    \renewcommand{\arraystretch}{1.38}%
+    \setlength{\abovecaptionskip}{0pt}%
+    \setlength{\belowcaptionskip}{10pt}%
+    \begin{longtable}{#1}
+        \caption{#2}
+        \label{#3} \\
+    }{
+\end{longtable}}
+
 % equation tweaking
 \usepackage{amssymb}
 \usepackage{bm} % 加粗使用
