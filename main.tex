@@ -32,12 +32,13 @@
 \input{main.cfg}    % Main items 
 \include{abstract}  % Abstract
 \fancypagestyle{plain}{\pagestyle{frontmatter}}
-\frontmatter\tableofcontents % Content
 
+\fancypagestyle{plain}{\pagestyle{catalogmatter}}\pagenumbering{Roman}\tableofcontents % Content
 
 % 正文
 \newpage\mainmatter
 \fancypagestyle{plain}{\pagestyle{mainmatter}}
+
 %\let\cleardoublepagebak=\cleardoublepage
 %\let\cleardoublepage\relax % Make new chapter stay on old page
 
