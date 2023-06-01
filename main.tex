@@ -31,10 +31,10 @@
 
 \input{main.cfg}    % Main items 
 \include{abstract}  % Abstract
-\fancypagestyle{plain}{\pagestyle{frontmatter}}
 
-\cleardoublepage
-\fancypagestyle{plain}{\pagestyle{catalogmatter}}\pagenumbering{Roman}\tableofcontents % Content
+\fancypagestyle{plain}{\pagestyle{frontmatter}}
+\frontmatter
+\tableofcontents % Content
 
 % 正文
 \newpage\mainmatter
