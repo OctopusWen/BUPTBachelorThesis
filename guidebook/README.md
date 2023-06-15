@@ -103,3 +103,9 @@ BYRIO社区也提供了[校内服务](https://overleaf.byrio.work/)，如果遇�
 下载地址：[texmaker](http://www.xm1math.net/texmaker/)
 
 在软件中打开 `main.tex`，依次执行 `xelatex`、`bibtex`、`xelatex`、`xelatex` 即完成编译，并在统一目录下生成 `main.pdf`。
+
+### 使用make命令
+
+使用`make all`可以在main.tex文件以及contents目录下所有文件发生变化时进行编译，使用`make all -B`可以在make认为依赖没有发生变化时强制执行编译，需要配合系统中的xelatex修改一下命令名称
+
+使用`make clean`可以清理一些生成的中间文件，保持目录整洁
