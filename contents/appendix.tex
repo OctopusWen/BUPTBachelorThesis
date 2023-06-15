@@ -1,0 +1,80 @@
+% Appendix
+% 附录页面设置,设置图片和公式计数器从开始,设置图片和公式命名样式
+\setcounter{figure}{0} 
+\renewcommand{\thefigure}{~附-\arabic{figure}~}
+\setcounter{equation}{0} 
+\renewcommand{\theequation}{~附-\arabic{equation}~}
+\setcounter{table}{0} 
+\renewcommand{\thetable}{~附-\arabic{table}~}
+\setcounter{lstlisting}{0} 
+\makeatletter
+  \renewcommand \thelstlisting
+       {附-\@arabic\c@lstlisting}
+\makeatother
+% 开始附录
+
+\chapter*{附\qquad{}录}
+% phantomsection语句用于在目录生成正确的跳转位置,使用chapter*等命令时需使用
+\phantomsection\addcontentsline{toc}{chapter}{附\qquad{}录}
+
+\phantomsection\addcontentsline{toc}{section}{附录1\quad{}缩略语表}
+\section*{附录1\quad{}缩略语表}
+
+\begin{bupttable}{基于浏览者行为的特征}{crowdwisdom2}
+    \begin{tabular}{l|l|l}
+        \hline \textbf{特征} & \textbf{描述} & \textbf{形式与理论范围}\\
+        \hline 点赞量 & 微博的点赞数量 & 数值，$\mathbb{N}$ \\
+        \hline 评论量 & 微博的评论数量 & 数值，$\mathbb{N}$ \\
+        \hline 转发量 & 微博的转发数量 & 数值，$\mathbb{N}$ \\
+        \hline
+    \end{tabular}
+\end{bupttable}
+
+\begin{bupttable}{基于浏览者行为的复杂特征}{complexcrowdwisdom2}
+    \begin{tabular}{l|l|l|l}
+		\hline
+        \multicolumn{1}{c|}{\multirow{2}{*}{\textbf{类别}}} & \multicolumn{1}{c|}{\multirow{2}{*}{\textbf{特征}}} & \multicolumn{2}{c}{\textbf{不知道叫什么的表头}} \\
+        \cline{3-4}
+         & & \multicolumn{1}{c|}{\textbf{描述}} & \multicolumn{1}{c}{\textbf{形式与理论范围}} \\
+		\hline
+        \multirow{3}{*}{正常互动} & 点赞量 & 微博的点赞数量 & 数值，$\mathbb{N}$ \\
+		\cline{2-4}
+         & 评论量 & 微博的评论数量 & 数值，$\mathbb{N}$ \\
+		\cline{2-4}
+         & 转发量 & 微博的转发数量 & 数值，$\mathbb{N}$ \\
+		\hline
+        非正常互动 & 羡慕量 & 微博的羡慕数量 & 数值，$\mathbb{N}$ \\
+        \hline
+    \end{tabular}
+\end{bupttable}
+\buptfigure[width=0.15\textheight]{pictures/autoencoder}{自编码器结构}{autoencoder}
+
+\begin{lstlisting}[language=Python, caption=减法, label=minus, tabsize=2]  
+def minusFunc(a, b):
+	return a - b 
+\end{lstlisting}  
+
+\begin{equation}
+\label{PCA_goal}
+\begin{aligned}
+\max_{\substack{\bm{W}}}  &  tr(\bm{W}^\mathrm{T}\bm{X}\bm{X}^ \mathrm{T}\bm{W})
+\end{aligned}
+\end{equation}
+
+\clearpage
+\phantomsection\addcontentsline{toc}{section}{附录2\quad{}数学符号}
+\section*{附录2\quad{}数学符号}
+\begin{center}
+	\begin{tabular}{ccc}
+		\multicolumn{2}{c}{\textbf{数和数组}} \\
+		\\
+		$a$ & 标量（整数或实数）\\
+		$\bm{a}$ & 向量\\
+		$dim()$ & 向量的维数\\
+		$\bm{A}$ & 矩阵\\
+		$\bm{A}^\mathrm{T}$ & 矩阵$\textbf{A}$的转置\\
+		$\bm{I}$ & 单位矩阵（维度依据上下文而定） \\
+ 		$diag(\bm{a})$ & 对角方阵，其中对角元素由向量$\bm{a}$确定 \\
+
+	\end{tabular}
+\end{center}

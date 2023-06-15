@@ -361,6 +361,9 @@ pdfborder=001, linkcolor=black, citecolor=black, urlcolor=black]{hyperref}  % �
 \AtBeginDocument{%
   \renewcommand \thelstlisting
        {\ifnum \c@chapter>\z@ \thechapter-\fi \@arabic\c@lstlisting}%
+
+	%取消代码计数器
+	\def\thelstlisting{}
 }
 \makeatother
 
