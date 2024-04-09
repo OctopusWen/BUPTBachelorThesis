@@ -45,6 +45,83 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% Main Area %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\chapter{绪论}
+\section{项目背景}
+随着图像生成技术的不断发展，图像编辑作为其中的关键技术之一，应用广泛，涵盖了媒体娱乐、数字营销和智能医疗等多个领域。然而，传统的图像编辑模型存在着交互性差和生成图像质量受限的问题，迫使我们探索更先进的方法以提高图像生成的质量和用户交互性。通过深度学习和语言大模型的结合，我们有望构建一个创新的交互式图像编辑系统，为图像编辑领域带来新的可能性。
+\section{项目意义}
+通过结合深度学习和语言大模型，可以为图像编辑领域带来创新和进步。这样的研究对于推动图像处理领域的发展具有重要意义，可以应用于媒体娱乐、数字营销、智能医疗等多个领域，为用户提供更优质的图像编辑体验，促进相关产业的发展。
+\section{项目内容}
+\buptfigure[width=0.7\textwidth]{pictures/arch.png}{}{arch_TMP}
+
+该项目主要实现了GUI、middleware，并对Stable Diffusion和ChatGLM2-6B进行修改与适配。
+各个模块之间的关系如 图1-1 所示。
+
+通过在基于Stable Diffusion的开源项目stable-diffusion-webui上进行扩展，
+本项目实现了通过API调用多种Stable Diffusion模型对图像进行修改的功能。
+
+通过对ChatGLM2-6B进行微调，本项目实现了通过API调用针对本任务微调过的ChatGLM2-6B模型。
+
+通过调用openAI的API，本项目实现了多个功能：通过GPT4V生成图像修改的建议、
+通过GPT3.5Turbo辅助生成微调大语言模型的数据集和图像修改的指令、
+通过DALL-E2实现在Stable Diffusion不可用时作为替代模型对图像进行修改。
+
+GUI主要通过python语言实现，其构建了一个直观、易于使用的用户交互界面。
+在消耗大量计算资源的任务上，GUI会通过API对middleware发出请求，
+减少了用户侧对计算资源的依赖，降低了用户的使用门槛。
+
+middleware使用golang语言搭建了一个后端服务，其接入了Stable Diffusion、ChatGLM2-6B、openAI的API，并将这些API进行整合后向GUI提供API。middleware的建立实现了一对多服务的能力，提高了GUI调用多方API的便利性，同时通过统一配置提高了系统的可维护性。
+
+
+
+\chapter{总体方案设计}
+\section{GUI}
+GUI虽然承担计算任务较少，但却是承载本项目结构与逻辑的关键部分。通过使用符合规则的指令作为中枢，
+GUI打通了大语言模型和图像生成模型之间的壁垒，使基于LLM的创新交互式图像编辑系统成为可能。GUI的模块构成如 表2-1 ：
+\begin{bupttable}{GUI模块}{table_gui_modules}
+    \begin{tabular}{|l|l|}
+        \hline \textbf{模块} & \textbf{描述} \\
+        \hline BaseImage & 接受上传的原始图片并预览  \\
+        \hline EditedImage & 预览修改后的图片 \\
+        \hline Operation Board & 执行指令  \\
+		\hline Settings & 对系统进行设置  \\
+		\hline Chat & 与大语言模型交互的聊天界面  \\
+		\hline Edit Image & 对图像进行自定义遮罩和换脸等操作  \\
+		\hline Auto & 执行自动化操作  \\
+		\hline Manual & 系统使用说明  \\
+        \hline
+    \end{tabular}
+\end{bupttable}
+
+用户首先上传需要修改的图片，然后可在Chat模块中选择不同的大语言模型进行交互并得到相应的指令，
+最后在Operation Board模块中选择指令执行或一键全部执行。如果对自动生成的遮罩不满意，
+可在Edit Image中对遮罩进行修改。
+
+在Auto模块中，用户可通过选择多张图片批量生成满足微调大语言模型微调所需的数据。
+其首先会将图片继续分割，将分割后的结果和特定的prompt通过GPT3.5Turbo生成对应的修改建议，
+再将分割的结果、生成的建议通过GPT3.5Turbo生成指令。
+
+
+\newpage
+\section{middleware}
+middleware通过整合多个平台的API，向GUI提供风格统一且简单易接入的API服务。
+middleware提供给GUI的API如 表2-2 ：
+\begin{bupttable}{GUI模块}{table_gui_modules}
+    \begin{tabular}{|l|l|l|}
+        \hline \textbf{API} & \textbf{路由} & \textbf{描述} \\
+        \hline PostSDTxt2Img & /v1/pics/txt2img & 通过Stable Diffusion模型生成图片  \\
+        \hline PostSDImg2Img & /v1/pics/img2img & 通过Stable Diffusion模型修改图片 \\
+        \hline PostDALLE2Edit & /v1/pics/openai/img2img & 通过DALL-E2模型修改图片  \\
+		\hline GetLoras & /v1/pics/loras & 获取可用的LoRa模型列表  \\
+		\hline PostHuggingFaceImgSegment & /v1/pics/huggingface/segment & 获取图像分割结果  \\
+		\hline PostGPT3Dot5Turbo & /v1/chat/gpt3dot5turbo & 调用GPT3.5Turbo  \\
+		\hline PostGPT4 & /v1/chat/gpt4 & 调用GPT4  \\
+		\hline PostChatGLM2\_6B & /v1/chat/glm2\_6b & 调用ChatGLM2-6B  \\
+		\hline PostGPT4V & /v1/chat/gpt4v & 调用GPT4V  \\
+        \hline
+    \end{tabular}
+\end{bupttable}
+
+
 \chapter{基础模块示例}
 
 \section{特殊文本类型}
