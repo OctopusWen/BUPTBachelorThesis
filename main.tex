@@ -61,7 +61,7 @@
 
 通过对ChatGLM2-6B进行微调，本项目实现了通过API调用针对本任务微调过的ChatGLM2-6B模型。
 
-通过调用openAI的API，本项目实现了多个功能：通过GPT4V生成图像修改的建议、
+通过调用OpenAI的API，本项目实现了多个功能：通过GPT4V生成图像修改的建议、
 通过GPT3.5Turbo辅助生成微调大语言模型的数据集和图像修改的指令、
 通过DALL-E2实现在Stable Diffusion不可用时作为替代模型对图像进行修改。
 
@@ -69,7 +69,7 @@ GUI主要通过python语言实现，其构建了一个直观、易于使用的�
 在消耗大量计算资源的任务上，GUI会通过API对middleware发出请求，
 减少了用户侧对计算资源的依赖，降低了用户的使用门槛。
 
-middleware使用golang语言搭建了一个后端服务，其接入了Stable Diffusion、ChatGLM2-6B、openAI的API，并将这些API进行整合后向GUI提供API。middleware的建立实现了一对多服务的能力，提高了GUI调用多方API的便利性，同时通过统一配置提高了系统的可维护性。
+middleware使用golang语言搭建了一个后端服务，其接入了Stable Diffusion、ChatGLM2-6B、OpenAI的API，并将这些API进行整合后向GUI提供API。middleware的建立实现了一对多服务的能力，提高了GUI调用多方API的便利性，同时通过统一配置提高了系统的可维护性。
 
 
 
@@ -97,15 +97,19 @@ GUI打通了大语言模型和图像生成模型之间的壁垒，使基于LLM�
 可在Edit Image中对遮罩进行修改。
 
 在Auto模块中，用户可通过选择多张图片批量生成满足微调大语言模型微调所需的数据。
-其首先会将图片继续分割，将分割后的结果和特定的prompt通过GPT3.5Turbo生成对应的修改建议，
+其会循环地从给定的图片集中随机选择图片继续分割，将分割后的结果和特定的prompt通过GPT3.5Turbo生成对应的修改建议，
 再将分割的结果、生成的建议通过GPT3.5Turbo生成指令。
 
 
-\newpage
 \section{middleware}
-middleware通过整合多个平台的API，向GUI提供风格统一且简单易接入的API服务。
-middleware提供给GUI的API如 表2-2 ：
-\begin{bupttable}{GUI模块}{table_gui_modules}
+middleware是项目的核心组件，通过整合多个平台的API，为GUI提供统一的、简单易接入的API服务。其主要特点包括但不限于：
+1. API整合：middleware整合了多个平台的API，包括图像生成模型、语言模型等，使得GUI可以通过统一的接口调用不同功能模块；
+2. 统一风格：middleware设计了统一的API风格和路由规范，使得GUI可以轻松使用API服务，提高开发效率；
+3. 简单易接入：middleware提供了简单易用的API服务，GUI无需关注具体实现细节，只需按照简单的请求规范调用API即可；
+4. 稳定性和可靠性：middleware基于Golang语言实现，具有高效的并发处理能力和稳定的运行性能，保证了API服务的稳定性和可靠性；
+5. 易于维护：middleware采用了Beego框架，具有清晰的代码结构和模块化设计，易于维护和扩展，保证了项目的长期可持续发展。
+其向GUI提供的主要API如 表2-2 所示：
+\begin{bupttable}{middleware 主要API}{table_gui_modules}
     \begin{tabular}{|l|l|l|}
         \hline \textbf{API} & \textbf{路由} & \textbf{描述} \\
         \hline PostSDTxt2Img & /v1/pics/txt2img & 通过Stable Diffusion模型生成图片  \\
@@ -121,6 +125,60 @@ middleware提供给GUI的API如 表2-2 ：
     \end{tabular}
 \end{bupttable}
 
+\section{Stable Diffusion}
+由于本项目对于图像生成模型的要求较高且需求复杂，为了便于结合Stable Diffusion模型和其他前沿研究成果和开源社区项目，本项目在构建Stable Diffusion模块时
+以开源项目stable-diffusion-webui\footnote{https://github.com/AUTOMATIC1111/stable-diffusion-webui}为基础，
+结合Control Net\cite{zhang2023adding}和基于DeepFake\cite{van2021deepfake}的开源项目sd-webui-roop\footnote{https://github.com/s0md3v/sd-webui-roop}，
+通过 API 为middleware提供服务。
+
+\section{OpenAI}
+本项目使用了OpenAI\footnote{https://openai.com}的GPT3.5Turo、GPT4、GPT4V、DALL-E2等模型，通过 API 调用OpenAI的模型。
+% TODO: unimpl
+
+\section{ChatGLM2-6B}
+本项目使用开源的ChatGLM2-6B模型，使用开源项目LLaMA-Factory\footnote{https://github.com/hiyouga/LLaMA-Factory}，
+利用本项目提供的数据自动生成功能所生成的数据集，使用LoRa\cite{hu2021lora}方法对模型进行微调以在本项目所需的任务中获得更佳的表现。微调后的模型通过fastapi提供 API 服务。
+
+\chapter{实现方法}
+\section{图像处理有关的实现方法}
+\subsection{图像自动遮罩}
+该项目提供了两种自动生成遮罩的方法：基于关键词对自动生成遮罩和基于已给出的点自动填充生成遮罩。
+两种方法都会首先使用图像分割模型对图像进行分割（如图3-1），然后生成原始的遮罩，最后会通过本项目设计的优化算法生成最终的遮罩。
+\begin{figure}[!htbp]
+    \centering
+    \subfloat[]{ %[]对齐方式，t为top，b为bottom，留空即可
+	\label{Fig:SegmentOrigin} % 子图1标签名
+    	\includegraphics[width=0.24\textwidth]{pictures/example1_origin} %插入图片命令，格式为[配置]{图片路径}
+    }
+    \quad %空格
+    \subfloat[]{
+	\label{Fig:SegmentResult} % 子图2标签名
+    	\includegraphics[width=0.24\textwidth]{pictures/example1_segment}
+    }
+    \caption{图像分割结果：\protect\subref{Fig:SegmentOrigin}原始图像，\protect\subref{Fig:SegmentResult}分割结果} %注意须使用\protect\subref{}进行标号引用
+    \label{Fig:Segment} % 整个组图的标签名
+\end{figure}
+
+基于关键词自动生成遮罩的方法会根据关键词和图像分割结果生成自动原始的遮罩，该功能会遍历每个给出的关键词，
+若关键词与分割结果之一吻合，则会对相应的分割区域进行遮罩，生成原始的遮罩。
+
+基于已给出的点自动填充生成遮罩的方法会根据在图片中标记的点和图像分割结果生成自动原始的遮罩，该功能会遍历每个给出的点，
+将该点所在的部分全部进行遮罩，最后生成原始的遮罩。
+
+\begin{figure}[!htbp]
+    \centering
+    \subfloat[]{
+	\label{Fig:SegmentPoints} % 子图2标签名
+    	\includegraphics[width=0.24\textwidth]{pictures/example1_points}
+    }
+    \quad %空格
+    \subfloat[]{
+	\label{Fig:SegmentStep1} % 子图2标签名
+    	\includegraphics[width=0.24\textwidth]{pictures/example1_step1}
+    }
+    \caption{基于已给出的点自动填充生成遮罩：\protect\subref{Fig:SegmentPoints}标记后的图像，\protect\subref{Fig:SegmentStep1}生成的遮罩} %注意须使用\protect\subref{}进行标号引用
+    \label{Fig:Point} % 整个组图的标签名
+\end{figure}
 
 \chapter{基础模块示例}
 
