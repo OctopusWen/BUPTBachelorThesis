@@ -140,31 +140,46 @@ middleware是项目的核心组件，通过整合多个平台的API，为GUI提�
 利用本项目提供的数据自动生成功能所生成的数据集，使用LoRa\cite{hu2021lora}方法对模型进行微调以在本项目所需的任务中获得更佳的表现。微调后的模型通过fastapi提供 API 服务。
 
 \chapter{实现方法}
-\section{图像处理有关的实现方法}
-\subsection{图像自动遮罩}
+\section{图像自动遮罩与优化}
+
 该项目提供了两种自动生成遮罩的方法：基于关键词对自动生成遮罩和基于已给出的点自动填充生成遮罩。
 两种方法都会首先使用图像分割模型对图像进行分割（如图3-1），然后生成原始的遮罩，最后会通过本项目设计的优化算法生成最终的遮罩。
 \begin{figure}[!htbp]
     \centering
     \subfloat[]{ %[]对齐方式，t为top，b为bottom，留空即可
-	\label{Fig:SegmentOrigin} % 子图1标签名
-    	\includegraphics[width=0.24\textwidth]{pictures/example1_origin} %插入图片命令，格式为[配置]{图片路径}
+	\label{Fig:SegmentOrigin1} % 子图1标签名
+    	\includegraphics[width=0.45\textwidth]{pictures/example1_origin} %插入图片命令，格式为[配置]{图片路径}
     }
     \quad %空格
     \subfloat[]{
-	\label{Fig:SegmentResult} % 子图2标签名
-    	\includegraphics[width=0.24\textwidth]{pictures/example1_segment}
+	\label{Fig:SegmentResult1} % 子图2标签名
+    	\includegraphics[width=0.45\textwidth]{pictures/example1_segment}
     }
-    \caption{图像分割结果：\protect\subref{Fig:SegmentOrigin}原始图像，\protect\subref{Fig:SegmentResult}分割结果} %注意须使用\protect\subref{}进行标号引用
+    \caption{图像分割结果：\protect\subref{Fig:SegmentOrigin1}原始图像，\protect\subref{Fig:SegmentResult1}分割结果} %注意须使用\protect\subref{}进行标号引用
     \label{Fig:Segment} % 整个组图的标签名
 \end{figure}
 
+\newpage
+\subsection{图像自动遮罩}
 基于关键词自动生成遮罩的方法会根据关键词和图像分割结果生成自动原始的遮罩，该功能会遍历每个给出的关键词，
-若关键词与分割结果之一吻合，则会对相应的分割区域进行遮罩，生成原始的遮罩。
+若关键词与分割结果之一吻合，则会对相应的分割区域进行遮罩，生成原始的遮罩（如图3-2）。
+\begin{figure}[!htbp]
+    \centering
+    \subfloat[]{ %[]对齐方式，t为top，b为bottom，留空即可
+	\label{Fig:SegmentOrigin2} % 子图1标签名
+    	\includegraphics[width=0.24\textwidth]{pictures/example2_origin} %插入图片命令，格式为[配置]{图片路径}
+    }
+    \quad %空格
+    \subfloat[]{
+	\label{Fig:SegmentResult2} % 子图2标签名
+    	\includegraphics[width=0.24\textwidth]{pictures/example2_step1}
+    }
+    \caption{关键词自动生成遮罩结果：\protect\subref{Fig:SegmentOrigin2}原始图像，\protect\subref{Fig:SegmentResult2}kewords=['Background', 'Upper-clothes', 'Dress', 'Right-arm']得到的遮罩} %注意须使用\protect\subref{}进行标号引用
+    \label{Fig:SegmentKeywords} % 整个组图的标签名
+\end{figure}
 
 基于已给出的点自动填充生成遮罩的方法会根据在图片中标记的点和图像分割结果生成自动原始的遮罩，该功能会遍历每个给出的点，
-将该点所在的部分全部进行遮罩，最后生成原始的遮罩。
-
+将该点所在的部分全部进行遮罩，最后生成原始的遮罩（如图3-3）。
 \begin{figure}[!htbp]
     \centering
     \subfloat[]{
@@ -180,6 +195,47 @@ middleware是项目的核心组件，通过整合多个平台的API，为GUI提�
     \label{Fig:Point} % 整个组图的标签名
 \end{figure}
 
+\newpage
+\subsection{对自动生成的遮罩进行优化}
+由于分割模型性能的限制，生成的原始遮罩可能在某些细节上表现不佳而影响图像编辑模型的结果，因此设计了一个算法对自动生成的遮罩
+进行优化。该算法可以根据配置文件的设置，对特定的未被遮罩的部分在遮罩的边缘进行收缩。
+
+\begin{algorithm} 
+	\begin{spacing}{1.3}
+		\floatname{algorithm}{算法}
+		\caption{遮罩优化算法} 
+		\label{MaskOptimizationAlgorithm}
+		\renewcommand{\algorithmicrequire}{\textbf{输入：}}
+		\renewcommand{\algorithmicensure}{\textbf{输出：}} 
+			\begin{algorithmic}[1] 
+				\Require 原始遮罩$OriginMask$，图像分割结果$SegmentResult$，配置文件$Config$
+				\Ensure 优化后的遮罩$OptimizedMask$
+				\State 获取遮罩与非遮罩的描边得到像素$EdgePixcels$
+				\State 从配置文件和图像分割结果获取$ConfigPixcels$
+                \State 仅保留出现在$EdgePixcels$中的$ConfigPixcels$
+                \For{$pixcel$ in $ConfigPixcels$}
+                    \State Apply MinFilter $Kerne$(in $Config$) in $OriginMask$[$pixcel$]
+                \EndFor
+                \State 得到优化后的遮罩$OptimizedMask$
+			\end{algorithmic}
+	\end{spacing}
+\end{algorithm}
+
+该算法实现的效果如 图3-4 所示，可见在发丝附近遮罩的质量得到了明显的改善。
+\begin{figure}[!htbp]
+    \centering
+    \subfloat[]{ %[]对齐方式，t为top，b为bottom，留空即可
+	\label{Fig:MaskOrigin} % 子图1标签名
+    	\includegraphics[width=0.24\textwidth]{pictures/example2_step1} %插入图片命令，格式为[配置]{图片路径}
+    }
+    \quad %空格
+    \subfloat[]{
+	\label{Fig:MaskOptimized} % 子图2标签名
+    	\includegraphics[width=0.24\textwidth]{pictures/example2_step2}
+    }
+    \caption{遮罩优化结果：\protect\subref{Fig:MaskOrigin}原始遮罩，\protect\subref{Fig:MaskOptimized}算法优化后的遮罩} %注意须使用\protect\subref{}进行标号引用
+    \label{Fig:MaskOptimize} % 整个组图的标签名
+\end{figure}
 \chapter{基础模块示例}
 
 \section{特殊文本类型}
