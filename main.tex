@@ -214,7 +214,7 @@ middleware是项目的核心组件，通过整合多个平台的API，为GUI提�
 				\State 从配置文件和图像分割结果获取$ConfigPixcels$
                 \State 仅保留出现在$EdgePixcels$中的$ConfigPixcels$
                 \For{$pixcel$ in $ConfigPixcels$}
-                    \State Apply MinFilter $Kerne$(in $Config$) in $OriginMask$[$pixcel$]
+                    \State Apply MinFilter $Kernel$(in $Config$) in $OriginMask$[$pixcel$]
                 \EndFor
                 \State 得到优化后的遮罩$OptimizedMask$
 			\end{algorithmic}
@@ -236,6 +236,126 @@ middleware是项目的核心组件，通过整合多个平台的API，为GUI提�
     \caption{遮罩优化结果：\protect\subref{Fig:MaskOrigin}原始遮罩，\protect\subref{Fig:MaskOptimized}算法优化后的遮罩} %注意须使用\protect\subref{}进行标号引用
     \label{Fig:MaskOptimize} % 整个组图的标签名
 \end{figure}
+\newpage
+\section{多模态}
+如何打通大语言模型和图像生成模型是本项目的关键。本项目通过特定的prompt和图像分割结果，使用大语言模型生成json格式的指令并校验，并支持多轮对话。
+用户可有选择性地执行生成的指令或执行全部指令。系统首先会按照给定的规则对指令进行预处理和排序，然后通过指令生成请求参数来调用图像生成模型。
+\subsection{json指令生成}
+通过特定的prompt和图像分割结果以及用户输入的修改意图，本项目可使用GPT3.5Turbo、GPT4、
+微调后的ChatGLM2-6B生成json指令。例：当图像分割结果为$Background, Hair, Upper-clothes, Dress, Face, Right-arm$，用户输入为
+“将背景更换为蓝天白云，将衣服更改为白色的T-shirt”时，生成的json指令如 代码3-1 所示。
+
+\begin{lstlisting}[language=Python, caption=生成的指令, label=plus, tabsize=2]  
+    [
+        {
+            "command" : "change",
+            "paras" : [ ["Background","Upper-clothes"] , "blue sky, white T-shirt"]
+        }
+    ]
+\end{lstlisting} 
+
+\subsection{json指令校验}
+由于大语言模型生成指令不稳定，需要对生成指令的合规性进行校验。校验规则存储为一个json文件，以修改非面部和面部的指令为例，校验规则如 代码3-2 所示：
+\begin{lstlisting}[language=Python, caption=指令校验规则, label=plus, tabsize=2]  
+    {
+    "face": {
+        "paras_type": [
+            "<class 'str'>"
+        ],
+        "paras_enum": null,
+        "paras_min": null,
+        "paras_max": null,
+        "combine": true,
+        "priority": 1
+    },
+    "change": {
+        "paras_type": [
+            "<class 'list'>",
+            "<class 'str'>"
+        ],
+        "paras_enum": null,
+        "paras_min": null,
+        "paras_max": null,
+        "combine": true,
+        "priority": 1
+    }
+}
+\end{lstlisting} 
+指令校验的算法如 算法-2 所示。
+\begin{algorithm} 
+	\begin{spacing}{1.3}
+		\floatname{algorithm}{算法}
+		\caption{json指令校验算法} 
+		\label{JsonCommandCheckAlgorithm}
+		\renewcommand{\algorithmicrequire}{\textbf{输入：}}
+		\renewcommand{\algorithmicensure}{\textbf{输出：}} 
+			\begin{algorithmic}[1] 
+				\Require 待校验的指令$JsonCommands$、校验规则$Rules$
+				\Ensure 校验后的指令$ValidJsonCommands$
+                \For{$Command$ in $JsonCommands$}
+                    \If {$Command$ satisfy $Rules$}
+                        \State Add $Command$ to $ValidJsonCommands$
+                    \EndIf
+                \EndFor
+			\end{algorithmic}
+	\end{spacing}
+\end{algorithm}
+
+\subsection{多指令处理}
+由于一次执行可能会涉及到多个指令，会遇到指令重复、指令优先性等问题，所以会对需要执行的指令进行合并与排序。
+指令合并的算法如下：
+\begin{algorithm} 
+	\begin{spacing}{1.3}
+		\floatname{algorithm}{算法}
+		\caption{多指令处理算法} 
+		\label{JsonCommandsProcessingAlgorithm}
+		\renewcommand{\algorithmicrequire}{\textbf{输入：}}
+		\renewcommand{\algorithmicensure}{\textbf{输出：}} 
+			\begin{algorithmic}[1] 
+				\Require 待处理的指令$OriginCommands$、指令合并规则$Rules$、指令优先性$Priority$
+				\Ensure 处理后的指令$ProcessedCommands$
+                \For{$Command$ in $OriginCommands$}
+                    \If {Same $Command$ type already in $ProcessedCommands$}
+                        \State Combine $Command$ to the same one in $ValidJsonCommands$ use $Rules$
+                    \EndIf
+                \EndFor
+                \State 根据$Priority$对$ValidJsonCommands$进行排序
+			\end{algorithmic}
+	\end{spacing}
+\end{algorithm}
+
+\subsection{图像模型请求参数生成}
+图像模型请求参数生成较为复杂，对于某个参数，其可能来源于GUI中可修改的设置，可能来源于指令，可能来源于模版，否则设置为默认参数。
+由于每个参数来说，其来源的优先性可能不一致，因此设计了 算法-4 来生成图像模型请求参数。
+\begin{algorithm} 
+	\begin{spacing}{1.3}
+		\floatname{algorithm}{算法}
+		\caption{图像模型请求参数生成算法} 
+		\label{ImageParasGenAlgorithm}
+		\renewcommand{\algorithmicrequire}{\textbf{输入：}}
+		\renewcommand{\algorithmicensure}{\textbf{输出：}} 
+			\begin{algorithmic}[1] 
+				\Require 指令$Command$、设置$Settings$、默认参数$Default$、参数来源优先性$PriorityRules$
+				\Ensure 图像模型请求参数$Parameters$
+                \For{$ParaKey$ in $Parameters$}
+                    \State Get $Template$ from $Command$
+                    \If {$ParaKey$ found in $Command$ or $Settings$ or $Template$}
+                        \State Choose the highest priority source use $PriorityRules$[$ParaKey$]
+                    \Else
+                        \State Set this parameter to $Default$[$ParaKey$]
+                    \EndIf
+                \EndFor
+			\end{algorithmic}
+	\end{spacing}
+\end{algorithm}
+
+\section{图像修改建议}
+
+\section{LLM微调数据集生成与性能评估}
+
+
+
+
 \chapter{基础模块示例}
 
 \section{特殊文本类型}
