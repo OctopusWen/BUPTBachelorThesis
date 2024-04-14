@@ -45,35 +45,73 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% Main Area %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter{绪论}
+\chapter{绪论} % 2085 + 66 + 25 = 2176
 \section{项目背景}
-随着图像生成技术的不断发展，图像编辑作为其中的关键技术之一，应用广泛，涵盖了媒体娱乐、数字营销和智能医疗等多个领域。然而，传统的图像编辑模型存在着交互性差和生成图像质量受限的问题，迫使我们探索更先进的方法以提高图像生成的质量和用户交互性。通过深度学习和语言大模型的结合，我们有望构建一个创新的交互式图像编辑系统，为图像编辑领域带来新的可能性。
+随着技术的迅速发展，图像生成技术在多个行业中发挥着越来越重要的作用，尤其是在媒体娱乐、数字营销和智能医疗等领域。
+然而，尽管其应用广泛，传统的图像编辑技术仍面临许多挑战，尤其是在交互性和生成图像质量上的限制。
+
+传统图像编辑工具往往依赖于专业的技术知识和复杂的操作界面，这对于普通用户来说是一个较大的门槛。
+用户需要花费大量时间学习如何使用这些工具，这限制了工具的普及性和易用性。这些工具的交互性通常较差，不能很好地根据用户的具体需求进行灵活调整和响应。
+
+为了克服这些挑战，人们正在探索利用深度学习技术来改善图像编辑系统。
+深度学习，特别是扩散模型，已经在图像生成领域显示出了巨大的潜力。
+这些技术能够学习大量图像数据，自动提取复杂的特征，并生成高质量的图像。
+此外，结合最新的GPT4等性能优异的大语言模型，可以进一步提升系统的交互性，实现更加自然和直观的用户界面。
+
+图像生成模型是深度学习领域中一个活跃的研究方向，主要致力于通过机器学习技术生成高质量的图像。这些模型在多种应用场景中均有广泛应用，包括艺术创作、游戏开发、电影制作等。目前，图像生成模型主要包括生成对抗网络（GANs）、变分自编码器（VAEs）和扩散模型等。
+
+扩散模型是近年来发展起来的一种新型生成模型，与传统的生成对抗网络（GANs）和变分自编码器（VAEs）相比，扩散模型在生成图像的质量和多样性方面展现出了卓越的性能。其基本原理是模拟从高质量数据分布到高熵噪声分布的逐步转变过程，然后再逆向这一过程以生成新的数据。
+扩散模型的工作流程可以分为两个阶段：前向扩散过程和反向生成过程。在前向扩散过程中，模型逐渐将数据中的信息转化为噪声，这一过程通常通过向数据中逐步加入高斯噪声来实现。在反向生成过程中，模型则需要学习如何从噪声状态恢复出原始数据的分布，这一过程通常通过训练一个参数化的神经网络来完成，网络的目标是最小化原始数据与生成数据之间的差异。
+扩散模型的关键优势在于其生成的图像具有较高的质量和自然性，这是因为模型在生成过程中能够更好地控制噪声的去除过程，并逐步精细化图像的细节。此外，扩散模型在训练过程中相对稳定，不易出现生成对抗网络中常见的模式崩溃问题。
+
+大语言模型是人工智能领域中的一项核心技术，主要用于处理和理解自然语言。这些模型通过学习大量文本数据，能够生成文本、回答问题、翻译语言等。随着算力的提升和语料的增加，大语言模型已经取得了显著的进步，并在多个应用场景中展现出了巨大的潜力。
+近几年，随着深度学习技术的发展，尤其是Transformers架构的提出，大语言模型的性能得到了质的飞跃。Transformers架构能够有效处理长距离依赖问题，并在许多自然语言处理任务中设定了新的性能标准，GPT（Generative Pre-trained Transformer）、BERT（Bidirectional Encoder Representations from Transformers）等主流模型，通过大规模的语料进行预训练，对语言的深层次结构和语义的理解能力有了显著的提升，在应用方面展现出广泛的适用性，包括但不限于文本生成、对话系统、语言翻译、内容摘要和情感分析等。
+
+通过图像生成模型与大语言模型的结合，可以创建一个更加灵活且易用性强的图像编辑系统。
+这样的系统不仅能够提供更加直观的编辑界面，降低用户的操作难度，还能够根据用户的描述自动生成或修改图像，
+极大地提升生成图像的质量和编辑效率。例如，用户可以通过简单的语言指令，如“增加图片亮度”或“改变背景为海滩”，
+直接与编辑系统交互，系统能够理解这些指令并即时作出响应。
+
+通过整合深度学习和语言模型技术，我们有望构建出一个全新的交互式图像编辑系统。
+这种系统不仅能够提供更高质量的图像编辑结果，更能够提供给用户更加自然的交互方式，为该领域的专业人士和普通用户都带来更多的可能性。
 \section{项目意义}
-通过结合深度学习和语言大模型，可以为图像编辑领域带来创新和进步。这样的研究对于推动图像处理领域的发展具有重要意义，可以应用于媒体娱乐、数字营销、智能医疗等多个领域，为用户提供更优质的图像编辑体验，促进相关产业的发展。
+通过融合先进的图像生成技术与大语言模型，本项目希望能搭建一个基于LLM的交互式图像编辑系统，提供更为易用、精准且高效的图像编辑工具，提升媒体娱乐、数字营销以及智能医疗等多个行业的图像处理能力。
+通过实现更加智能化和用户友好型的编辑系统，为广大用户带来前所未有的图像编辑体验，并为促进技术创新做出贡献。这样的研究与开发，为图像编辑技术的未来提供了一种可能性和一条新的探索和实践路径。
+
 \section{项目内容}
 \buptfigure[width=0.7\textwidth]{pictures/arch.png}{}{arch_TMP}
 
-该项目主要实现了GUI、middleware，并对Stable Diffusion和ChatGLM2-6B进行修改与适配。
-各个模块之间的关系如 图1-1 所示。
+% 该项目主要实现了GUI、middleware，并对Stable Diffusion和ChatGLM2-6B进行修改与适配。
+% 各个模块之间的关系如 图1-1 所示。
 
-通过在基于Stable Diffusion的开源项目stable-diffusion-webui上进行扩展，
-本项目实现了通过API调用多种Stable Diffusion模型对图像进行修改的功能。
+% 通过在基于Stable Diffusion的开源项目stable-diffusion-webui上进行扩展，
+% 本项目实现了通过API调用多种Stable Diffusion模型对图像进行修改的功能。
 
-通过对ChatGLM2-6B进行微调，本项目实现了通过API调用针对本任务微调过的ChatGLM2-6B模型。
+% 通过对ChatGLM2-6B进行微调，本项目实现了通过API调用针对本任务微调过的ChatGLM2-6B模型。
 
-通过调用OpenAI的API，本项目实现了多个功能：通过GPT4V生成图像修改的建议、
-通过GPT3.5Turbo辅助生成微调大语言模型的数据集和图像修改的指令、
-通过DALL-E2实现在Stable Diffusion不可用时作为替代模型对图像进行修改。
+% 通过调用OpenAI的API，本项目实现了多个功能：通过GPT4V生成图像修改的建议、
+% 通过GPT3.5Turbo辅助生成微调大语言模型的数据集和图像修改的指令、
+% 通过DALL-E2实现在Stable Diffusion不可用时作为替代模型对图像进行修改。
 
-GUI主要通过python语言实现，其构建了一个直观、易于使用的用户交互界面。
-在消耗大量计算资源的任务上，GUI会通过API对middleware发出请求，
-减少了用户侧对计算资源的依赖，降低了用户的使用门槛。
+% GUI主要通过python语言实现，其构建了一个直观、易于使用的用户交互界面。
+% 在消耗大量计算资源的任务上，GUI会通过API对middleware发出请求，
+% 减少了用户侧对计算资源的依赖，降低了用户的使用门槛。
 
-middleware使用golang语言搭建了一个后端服务，其接入了Stable Diffusion、ChatGLM2-6B、OpenAI的API，并将这些API进行整合后向GUI提供API。middleware的建立实现了一对多服务的能力，提高了GUI调用多方API的便利性，同时通过统一配置提高了系统的可维护性。
+% middleware使用golang语言搭建了一个后端服务，其接入了Stable Diffusion、ChatGLM2-6B、OpenAI的API，并将这些API进行整合后向GUI提供API。middleware的建立实现了一对多服务的能力，提高了GUI调用多方API的便利性，同时通过统一配置提高了系统的可维护性。
 
+该项目是一个多模态交互式图像编辑系统，它主要实现了GUI、middleware、以及对Stable Diffusion和ChatGLM2-6B模型的修改与适配。在整体结构上，GUI、middleware、以及模型修改之间的相互关系和数据流向见 图1-1。
 
+项目基于Stable Diffusion的开源项目stable-diffusion-webui进行了扩展，增强了其功能。系统可以调用不同的Stable Diffusion模型并结合多个扩展后的功能来对图像进行精细的修改和调整。这一功能的实现大大增强了系统对图像处理的灵活性和多样性。
 
-\chapter{总体方案设计}
+项目还包括了对ChatGLM2-6B模型的微调。通过利用专门为本项目的需求生成的微调数据集进行微调，进一步提升了语言模型处理特定任务的能力和准确性，且能够利用API调用这些经过微调的ChatGLM2-6B模型。
+
+通过调用OpenAI的API，本项目实现了多项功能：利用GPT4V生成关于图像修改的建议，使用GPT3.5Turbo来辅助生成用于微调大语言模型的数据集以及图像修改指令，以及在Stable Diffusion模型不可用时，使用DALL-E2作为替代模型来进行图像修改。这些功能为基于LLM的交互式图像编辑系统提供了强大的工具。
+
+在GUI方面，本系统主要通过Python语言实现，构建了一个直观且用户友好的交互界面。该界面简洁易用，通过API调用向middleware发出请求，有效减轻了用户在执行计算密集型任务时对硬件资源的需求，从而降低了用户侧的使用门槛。
+
+middleware部分使用Golang语言构建了一个后端服务。这个服务不仅接入了Stable Diffusion、ChatGLM2-6B、OpenAI的API，还将这些API进行了有效的整合，向GUI提供了一致风格的API接口。这种设计不仅提升了GUI调用多方API的便利性，也通过统一的配置和管理，极大地增强了系统的可维护性和稳定性。
+
+\chapter{总体方案设计} % 1575+250 + 207 + 108 = 2140
 \section{GUI}
 GUI虽然承担计算任务较少，但却是承载本项目结构与逻辑的关键部分。通过使用符合规则的指令作为中枢，
 GUI打通了大语言模型和图像生成模型之间的壁垒，使基于LLM的创新交互式图像编辑系统成为可能。GUI的模块构成如 表2-1 ：
@@ -100,7 +138,6 @@ GUI打通了大语言模型和图像生成模型之间的壁垒，使基于LLM�
 其会循环地从给定的图片集中随机选择图片继续分割，将分割后的结果和特定的prompt通过GPT3.5Turbo生成对应的修改建议，
 再将分割的结果、生成的建议通过GPT3.5Turbo生成指令。
 
-
 \section{middleware}
 middleware是项目的核心组件，通过整合多个平台的API，为GUI提供统一的、简单易接入的API服务。其主要特点包括但不限于：
 1. API整合：middleware整合了多个平台的API，包括图像生成模型、语言模型等，使得GUI可以通过统一的接口调用不同功能模块；
@@ -126,40 +163,71 @@ middleware是项目的核心组件，通过整合多个平台的API，为GUI提�
 \end{bupttable}
 
 \section{Stable Diffusion}
-由于本项目对于图像生成模型的要求较高且需求复杂，为了便于结合Stable Diffusion模型和其他前沿研究成果和开源社区项目，本项目在构建Stable Diffusion模块时
+Stable Diffusion 是一种基于扩散模型的深度学习图像生成模型，它能够根据文本描述生成高质量的图像。
+这个模型采用了条件生成技术，允许用户通过文本指令来引导图像的生成，使其在艺术创作、媒体娱乐、广告和数字营销等多个领域具有广泛的应用。
+其核心在于从噪声逆向还原生成高质量的图片。
+
+sd-webui-controlnet\footnote{https://github.com/Mikubill/sd-webui-controlnet}使用了ControlNet\cite{zhang2023adding}的原理，
+旨在增强原有 Stable Diffusion 模型的图像生成控制能力。通过集成一个额外的控制网络（ControlNet），
+允许用户精确指导图像的具体内容，显著提升了生成图像的细节质量和一致性。
+
+sd-webui-roop\footnote{https://github.com/s0md3v/sd-webui-roop}基于DeepFake\cite{van2021deepfake}，
+允许用户在图片中进行面部替换，简化了面部交换的过程，无需训练特定的模型，大大降低了使用复杂度。
+
+由于本项目对于图像生成模型的要求较高且需求复杂，为了便于结合Stable Diffusion模型和其他前沿研究成果及开源社区项目，本项目在构建Stable Diffusion模块时
 以开源项目stable-diffusion-webui\footnote{https://github.com/AUTOMATIC1111/stable-diffusion-webui}为基础，
-结合Control Net\cite{zhang2023adding}和基于DeepFake\cite{van2021deepfake}的开源项目sd-webui-roop\footnote{https://github.com/s0md3v/sd-webui-roop}，
-通过 API 为middleware提供服务。
+结合sd-webui-controlnet和sd-webui-roop等扩展，通过 API 为middleware提供服务。
 
 \section{OpenAI}
 本项目使用了OpenAI\footnote{https://openai.com}的GPT3.5Turo、GPT4、GPT4V、DALL-E2等模型，通过 API 调用OpenAI的模型。
-% TODO: unimpl
+
+GPT-3.5 Turbo 是 OpenAI 开发的一款先进的自然语言处理模型，属于 GPT-3 系列的增强版本。这个模型在处理大量文本和生成文本方面表现出色，适用于聊天机器人、内容创作、文本摘要等应用。GPT-3.5 Turbo 优化了处理速度和响应时间，提高了交互效率。
+
+GPT-4 是 GPT-3 的后续版本，代表了最新一代的语言预测和生成技术。它在模型结构和训练数据量上进行了大幅扩展，使其能够更准确地理解和生成复杂的文本。GPT-4 在理解上下文、维持一致性以及生成更自然的语言方面具有显著优势。
+
+GPT-4V 是 GPT-4 的一个特殊版本，专门优化用于视觉任务，比如图像标注、视觉问答等。这个版本结合了文本和视觉处理能力，能够更好地理解和生成与图像相关的文本内容。
+
+DALL-E 2 是一个先进的图像生成模型，专门设计用来创建新颖的图像和艺术作品。它可以根据用户提供的文本描述生成详细、高质量的图像。DALL-E 2 的核心优势在于其创造力和多样性，能够在遵循描述的同时，创造出独特和富有创意的视觉内容。
 
 \section{ChatGLM2-6B}
-本项目使用开源的ChatGLM2-6B模型，使用开源项目LLaMA-Factory\footnote{https://github.com/hiyouga/LLaMA-Factory}，
+ChatGLM2-6B是由清华大学开发的第二代开源双语（中英）对话模型，基于ChatGLM-6B的成功经验并引入了多项新特性和性能提升。
+这款模型经过大规模预训练，实现了显著的性能提升，并在多个数据集上表现出色。
+ChatGLM2-6B支持更长的对话上下文，并提高了推理速度和降低了显存占用，
+使得即使在资源有限的环境下也能有效运行。
+
+本项目使用ChatGLM2-6B模型，使用开源项目LLaMA-Factory\footnote{https://github.com/hiyouga/LLaMA-Factory}，
 利用本项目提供的数据自动生成功能所生成的数据集，使用LoRa\cite{hu2021lora}方法对模型进行微调以在本项目所需的任务中获得更佳的表现。微调后的模型通过fastapi提供 API 服务。
 
-\chapter{实现方法}
-\section{图像自动遮罩与优化}
 
-该项目提供了两种自动生成遮罩的方法：基于关键词对自动生成遮罩和基于已给出的点自动填充生成遮罩。
-两种方法都会首先使用图像分割模型对图像进行分割（如图3-1），然后生成原始的遮罩，最后会通过本项目设计的优化算法生成最终的遮罩。
+\chapter{GUI的构建} % 1674 + 257 + 139 = 2070
+在本项目中，GUI作为关键组成部分，虽仅承担极少的计算任务，却在结构与逻辑上起着至关重要的作用。
+它通过使用标准化的指令连接大语言模型和图像生成模型，实现了基于LLM的创新交互式图像编辑系统。
+用户首先上传原始图片至BaseImage模块进行预览，之后可通过Chat模块与大语言模型进行交互，获取编辑指令。
+用户可以在Operation Board模块中选择单独或批量执行这些指令。
+若对自动生成的遮罩不满意，可在Edit Image模块中手动调整。
+此外，Auto模块允许用户批量处理多张图片，自动生成数据以微调大语言模型。
+该过程包括图片的自动分割、利用GPT3.5Turbo生成编辑建议及相应的执行指令。
+这样的设计不仅提升了系统的效率，也优化了用户的交互体验。
+\section{图像自动遮罩与优化}
+由于本项目需要提供对图像进行部分修改的功能，所以需要在使用图像生成模型进行图像编辑时需要提供一个遮罩以明确需要修改的部分和不需要修改的部分。
+为了自动生成符合要求的遮罩，本项目借助图像分割和大语言模型的辅助，可通过两种方式生成自动遮罩：基于关键词对自动生成遮罩和基于已给出的点自动填充生成遮罩。
+两种方法都会首先使用图像分割模型对图像进行分割（如图3-1），然后根据给出的要求对相应的部分进行遮罩生成原始的遮罩。受制于图像分割模型在边缘上的表现并不理想，
+需要对特定的分割部分进行处理以提高遮罩的质量，因此最后会通过本项目设计的优化算法生成最终的遮罩。
 \begin{figure}[!htbp]
     \centering
     \subfloat[]{ %[]对齐方式，t为top，b为bottom，留空即可
 	\label{Fig:SegmentOrigin1} % 子图1标签名
-    	\includegraphics[width=0.45\textwidth]{pictures/example1_origin} %插入图片命令，格式为[配置]{图片路径}
+    	\includegraphics[width=0.24\textwidth]{pictures/example1_origin} %插入图片命令，格式为[配置]{图片路径}
     }
     \quad %空格
     \subfloat[]{
 	\label{Fig:SegmentResult1} % 子图2标签名
-    	\includegraphics[width=0.45\textwidth]{pictures/example1_segment}
+    	\includegraphics[width=0.24\textwidth]{pictures/example1_segment}
     }
     \caption{图像分割结果：\protect\subref{Fig:SegmentOrigin1}原始图像，\protect\subref{Fig:SegmentResult1}分割结果} %注意须使用\protect\subref{}进行标号引用
     \label{Fig:Segment} % 整个组图的标签名
 \end{figure}
 
-\newpage
 \subsection{图像自动遮罩}
 基于关键词自动生成遮罩的方法会根据关键词和图像分割结果生成自动原始的遮罩，该功能会遍历每个给出的关键词，
 若关键词与分割结果之一吻合，则会对相应的分割区域进行遮罩，生成原始的遮罩（如图3-2）。
@@ -183,16 +251,16 @@ middleware是项目的核心组件，通过整合多个平台的API，为GUI提�
 \begin{figure}[!htbp]
     \centering
     \subfloat[]{
-	\label{Fig:SegmentPoints} % 子图2标签名
+	\label{Fig:SegmentPoints} 
     	\includegraphics[width=0.24\textwidth]{pictures/example1_points}
     }
     \quad %空格
     \subfloat[]{
-	\label{Fig:SegmentStep1} % 子图2标签名
+	\label{Fig:SegmentStep1} 
     	\includegraphics[width=0.24\textwidth]{pictures/example1_step1}
     }
     \caption{基于已给出的点自动填充生成遮罩：\protect\subref{Fig:SegmentPoints}标记后的图像，\protect\subref{Fig:SegmentStep1}生成的遮罩} %注意须使用\protect\subref{}进行标号引用
-    \label{Fig:Point} % 整个组图的标签名
+    \label{Fig:Point} 
 \end{figure}
 
 \newpage
@@ -221,7 +289,7 @@ middleware是项目的核心组件，通过整合多个平台的API，为GUI提�
 	\end{spacing}
 \end{algorithm}
 
-该算法实现的效果如 图3-4 所示，可见在发丝附近遮罩的质量得到了明显的改善。
+由于该算法仅会对遮罩边缘上的像素进行卷积且在设计时充分考虑到了内存中像素的存储顺序的原因，虽然需要复杂的处理过程，但经过多次的迭代后算法的时间复杂度降低至$O(mnr)$（$m$,$n$表示图片的长宽，$r$表示设置的优化强度）。算法实现的效果如 图3-4 所示，可见在发丝附近遮罩的质量得到了明显的改善。
 \begin{figure}[!htbp]
     \centering
     \subfloat[]{ %[]对齐方式，t为top，b为bottom，留空即可
@@ -238,12 +306,19 @@ middleware是项目的核心组件，通过整合多个平台的API，为GUI提�
 \end{figure}
 \newpage
 \section{多模态}
-如何打通大语言模型和图像生成模型是本项目的关键。本项目通过特定的prompt和图像分割结果，使用大语言模型生成json格式的指令并校验，并支持多轮对话。
-用户可有选择性地执行生成的指令或执行全部指令。系统首先会按照给定的规则对指令进行预处理和排序，然后通过指令生成请求参数来调用图像生成模型。
-\subsection{json指令生成}
+如何打通大语言模型和图像生成模型是本项目的关键。本项目通过特定的prompt和图像分割结果，使用大语言模型生成JSON格式的指令并校验，并支持多轮对话。
+用户可有选择性地执行生成的指令或执行全部指令。系统首先会按照给定的规则对指令进行预处理和排序，然后通过指令生成请求参数来调用图像生成模型。多模态任务的实现方式如图3-5。
+\buptfigure[width=1\textwidth]{pictures/multimodal.png}{}{multimodal_TMP}
+
+\subsection{JSON指令生成}
+JSON（JavaScript Object Notation）是一种轻量级的数据交换格式，易于人阅读和编写，同时也易于机器解析和生成。
+它基于JavaScript的一个子集，但独立于语言，被广泛应用于许多编程语言中。JSON主要用于网络应用间浏览器与服务器之间的数据传输。
+在JSON中，数据以键值对的形式存在，可以表示数组、布尔值、数字、对象或字符串。由于其简洁性和易于交互的特性，JSON已成为Web应用中数据交换的主流技术。
+由于JSON应用范围广且大语言模型JSON处理能力较强，本项目采用此格式来承载大语言模型和图像生成模型的联系。
+
 通过特定的prompt和图像分割结果以及用户输入的修改意图，本项目可使用GPT3.5Turbo、GPT4、
-微调后的ChatGLM2-6B生成json指令。例：当图像分割结果为$Background, Hair, Upper-clothes, Dress, Face, Right-arm$，用户输入为
-“将背景更换为蓝天白云，将衣服更改为白色的T-shirt”时，生成的json指令如 代码3-1 所示。
+微调后的ChatGLM2-6B生成JSON指令。例：当图像分割结果为$Background, Hair, Upper-clothes, Dress, Face, Right-arm$，用户输入为
+“将背景更换为蓝天白云，将衣服更改为白色的T-shirt”时，生成的JSON指令如 代码3-1 所示。
 
 \begin{lstlisting}[language=Python, caption=生成的指令, label=plus, tabsize=2]  
     [
@@ -254,8 +329,8 @@ middleware是项目的核心组件，通过整合多个平台的API，为GUI提�
     ]
 \end{lstlisting} 
 
-\subsection{json指令校验}
-由于大语言模型生成指令不稳定，需要对生成指令的合规性进行校验。校验规则存储为一个json文件，以修改非面部和面部的指令为例，校验规则如 代码3-2 所示：
+\subsection{JSON指令校验}
+由于大语言模型生成指令不稳定，需要对生成指令的合规性进行校验。校验规则存储为一个JSON文件，以修改非面部和面部的指令为例，校验规则如 代码3-2 所示：
 \begin{lstlisting}[language=Python, caption=指令校验规则, label=plus, tabsize=2]  
     {
     "face": {
@@ -285,7 +360,7 @@ middleware是项目的核心组件，通过整合多个平台的API，为GUI提�
 \begin{algorithm} 
 	\begin{spacing}{1.3}
 		\floatname{algorithm}{算法}
-		\caption{json指令校验算法} 
+		\caption{JSON指令校验算法} 
 		\label{JsonCommandCheckAlgorithm}
 		\renewcommand{\algorithmicrequire}{\textbf{输入：}}
 		\renewcommand{\algorithmicensure}{\textbf{输出：}} 
@@ -350,8 +425,63 @@ middleware是项目的核心组件，通过整合多个平台的API，为GUI提�
 \end{algorithm}
 
 \section{图像修改建议}
+本项目提供了根据图像自动生成图像建议的功能。由于传统的大语言模型只能接受文本输入，因此本项目采用了GPT4V来自动生成图像修改建议。
 
-\section{LLM微调数据集生成与性能评估}
+GPT-4V是由OpenAI开发的多模态大型语言模型，是GPT系列基础模型的第四代。该模型具有视觉能力，可以将图片作为输入，进行各种任务，例如描述图片中的幽默、总结截图文本、回答包含图表的考试题目等。
+
+用户通过GUI界面的Advise按键，可以生成建议并将其转换为指令。
+
+\chapter{middleware的构建} % 550 + 78 + 21 = 649
+在本项目中，middleware作为核心组件，通过整合来自不同平台的API，为GUI提供了统一且易于接入的API服务。
+其整合了多个图像生成和大语言语言模型，通过统一的接口设计，使得GUI能够方便地调用所需的功能。
+此外，middleware采用了Golang语言和Beego框架，不仅保证了API服务的高并发处理能力和稳定性，
+还通过模块化的设计提高了系统的可维护性和可扩展性。主要API服务包括Stable Diffusion和DALL-E2模型、
+图像分割模型，以及多种大语言模型。这样的架构设计不仅优化了开发效率，也确保了系统的稳定运行和长期发展。
+\section{对多个平台的API进行配置和整合}
+middleware通过整合不同平台如图像生成模型、语言模型等的API，使得GUI开发者可以通过一个统一的接口调用多种功能。
+这种整合不仅包括API的聚合，还涉及统一API调用的风格和路由规范，不仅保证了API服务的高稳定性和可靠性，还便于日后的维护和扩展。例如，无论是调用ChatGLM2-6B模型还是多种GPT模型，
+GUI都能通过相同的结构化请求方式访问不同的服务。
+
+
+\section{使用beego框架提供API服务}
+middleware组件提供了多个API服务，以便GUI可以高效地使用各种模型和工具。
+$PostSDTxt2Img$和$PostSDImg2Img$是通过Stable Diffusion模型来生成或修改图像的API，这使得用户能够通过简单的API调用，进行复杂的图像生成和编辑操作。$GetLoras$这个API用于获取Stable Diffusion模型可用的LoRa模型列表。
+$PostDALLE2Edit$提供了利用DALL-E2模型修改图片的功能，这进一步扩展了图像处理的能力，在Stable Diffusion模型不可用时作为替代。
+$PostHuggingFaceImgSegment$ API通过可在部署在本地的分割模型不可用时通过调用Hugging Face上的图像分割模型API来实现图像分割。
+在文本处理方面，$PostGPT3Dot5Turbo$、$PostGPT4$和$PostGPT4V$等API利用OpenAI的不同版本GPT模型来处理指令理解和生成任务，$PostChatGLM2\_6B$可调用微调后的ChatGLM2-6B模型来进行指令生成。
+
+\chapter{LLM的微调}
+大语言模型（LLM）的微调是一种调整预训练模型以更好地适应特定任务或应用场景的过程。
+原始的ChatGLM2-6B模型已经通过大规模数据预训练，具备了强大的语言理解和生成能力，
+通过针对特定任务的微调，可以进一步提升模型在指令生成任务的表现。
+本项目利用开源项目LLaMA-Factory\footnote{https://github.com/hiyouga/LLaMA-Factory}和本项目中自动生成的指令生成任务数据集对ChatGLM2-6B模型进行微调。
+\section{LLM微调数据集生成与性能评估方法}
+\subsection{微调数据集生成}
+由于没有适用于本任务的开源数据集，本项目尝试建立一个自动化工作流程，
+通过利用ATR Dataset\footnote{https://github.com/lemondan/HumanParsing-Dataset}调用多个模型和一定的校验规则来生成所需的数据并整合为一个数据集。数据集生成的流程如 图5-1。
+同时，在系统使用过程中产生的数据可设置是否保存，这些数据也会在运行数据集生成脚本添加到数据集中。
+\buptfigure[width=0.65\textwidth]{pictures/dataset.png}{}{dataset_TMP}
+\subsection{LLM指令生成任性能评估方法}
+由于需要一种直观的性能评估方法来对不同的大语言模型在指令生成任务上的性能进行评估，本项目设计了算法对模型性能进行量化。
+
+\section{ChatGLM2-6B针对指令生成任务的微调}
+\section{各个LLM在本任务下的性能评估}
+
+\chapter{Stable Diffusion及扩展的使用}
+\section{Stable Diffusion API的使用}
+\section{ControlNet的使用及效果}
+\section{roop的使用及效果}
+
+\chapter{系统实现效果与使用}
+\section{系统实现效果}
+\section{系统使用方法}
+
+\chapter{项目管理与维护}
+\section{代码管理}
+\section{自动化测试}
+\section{持续集成与持续部署}
+
+
 
 
 
